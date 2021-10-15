@@ -272,7 +272,70 @@
         createTable();
       }
 
-      function SubmitTable() {}
+      function SubmitTable()
+      {
+        event.preventDefault();
+
+        var cellNumber = Math.pow(tableSize, 2);
+        cellNumber = tableType === "C" ? cellNumber + tableSize : cellNumber;
+
+        var matrix = [];
+        var arr = [];
+        var count = 0;
+
+        for(var i = 0, j = 0; i < cellNumber; i++){
+          var cellValue = document.getElementById("cell-" + i).value;
+
+          if(tableType === "C" && count == tableSize + 1){
+            j++;
+            count = 0;
+            arr = [];
+          }
+          else if(tableType === "L" && count == tableSize)
+          {
+            j++;
+            count = 0;
+            arr = [];
+          }
+
+          arr[count] = cellValue
+          matrix[j] = arr;
+          count++;
+        }
+
+
+
+        if(tableType === "C") PostCramer(matrix);
+        if(tableType === "L") PostLaplace(matrix);
+      }
+
+      function PostCramer(matrix){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://ynd8ax.deta.dev/Cramer/ComDP", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                console.log(json.Response);
+            }
+        };
+        var data = JSON.stringify({"matriz": matrix});
+        xhr.send(data);
+      }
+
+      function PostLaplace(matrix){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://ynd8ax.deta.dev/Laplace/ComDP", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var json = JSON.parse(xhr.responseText);
+                console.log(json.Response);
+            }
+        };
+        var data = JSON.stringify({"matriz": matrix});
+        xhr.send(data);
+      }
 
       var KTAppSettings = {
         breakpoints: {
