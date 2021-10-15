@@ -112,12 +112,12 @@
               <ul class="menu-nav">
                 <li class="menu-item" aria-haspopup="true">
                   <a href="index.html" class="menu-link">
-                    <span class="menu-text">Teorema de Laplace</span>
+                    <span onclick="changeToLaplace()" class="menu-text">Teorema de Laplace</span>
                   </a>
                 </li>
                 <li class="menu-item" aria-haspopup="true">
                   <a href="index.html" class="menu-link">
-                    <span class="menu-text">Regra de Cramer</span>
+                    <span onclick="changeToCrame()" class="menu-text">Regra de Cramer</span>
                   </a>
                 </li>
               </ul>
@@ -134,6 +134,22 @@
         <!--begin::Wrapper-->
         <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
           <!--begin::Content-->
+          <div id="Matriz" class="matriz-table"></div>
+          <button onclick="IncreaseTableSize()">+</button>
+          <button onclick="DecreaseTableSize()">-</button>
+          <button onclick="SubmitTable()">Enviar</button>
+
+          <style>
+            .matriz-table{
+              margin: 0 auto;
+            }
+
+            .matriz-table td{
+              padding: 0;
+              border: 1px solid black;
+            }
+          </style>
+
           <div
             class="content d-flex flex-column flex-column-fluid"
             id="kt_content"
@@ -171,6 +187,93 @@
 
     <!--begin::Global Config(global config for global JS scripts)-->
     <script>
+      var tableSize = 4;
+      var tableType = 'L';
+
+      createTable();
+
+      function createTable(){
+        var cellCount = 0;
+
+        var table = document.createElement('table');
+        table.classList.add('table');
+
+        var tbody = document.createElement('tbody');
+        tbody.setAttribute("id","tbody");
+
+        for (var i = 0; i < tableSize; i++) {
+          var tr = document.createElement('tr');
+
+          for (var j = 0; j < (tableType === "C" ? tableSize + 1 : tableSize); j++) {
+            var td = document.createElement('td');
+            td.classList.add("input");
+            var input = document.createElement('input');
+            input.type = "text";
+            
+            input.id = "cell-" + cellCount;
+            cellCount++;
+
+            td.appendChild(input);
+            tr.appendChild(td);
+          }
+
+          tbody.appendChild(tr);
+        }
+
+        table.appendChild(tbody);
+        
+        var local = document.getElementById('Matriz');
+        local.appendChild(table);
+      }
+
+      function destroyTable() {
+        var local = document.getElementById('Matriz');
+
+        local.firstChild.remove();
+      }
+
+      function IncreaseTableSize(){
+        if(tableSize < 11){
+          tableSize++;
+          destroyTable();
+          createTable();
+        }
+        else
+        {
+          alert("Tabela pode ter no máximo 10 de comprimento!");
+        }
+      }
+
+      function DecreaseTableSize(){
+        if(tableSize > 2){
+          tableSize--;
+          destroyTable();
+          createTable();
+        }
+        else
+        {
+          alert("Tabela pode ter no minimo 1 de comprimento!");
+        }
+      }
+
+      function changeToLaplace() 
+      {
+        event.preventDefault();
+        tableType = "L"
+        destroyTable();
+        createTable();
+      }
+
+      function changeToCrame ()
+      {
+        event.preventDefault();
+        tableType = "C"
+        destroyTable();
+        createTable();
+      }
+
+      function SubmitTable() {}
+
       var KTAppSettings = {
         breakpoints: {
           sm: 576,
