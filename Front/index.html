@@ -4,7 +4,7 @@
   <head>
     <base href="" />
     <meta charset="utf-8" />
-    <title>Metronic Live preview | Keenthemes</title>
+    <title>Phantom dancer calculator</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -49,9 +49,14 @@
       rel="stylesheet"
       type="text/css"
     />
+    <link
+      href="assets/css/style.index.css"
+      rel="stylesheet"
+      type="text/css"
+    />
 
     <!--end::Layout Themes-->
-    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+    <link rel="shortcut icon" href="assets/media/logos/logo-icon.png" />
   </head>
 
   <!--end::Head-->
@@ -84,7 +89,7 @@
           <div class="brand flex-column-auto" id="kt_brand">
             <!--begin::Logo-->
             <a href="index.html" class="brand-logo">
-              <img alt="Logo" src="assets/media/logos/logo-light.png" />
+              <img alt="Logo" src="assets/media/logos/logo-pd.png" class="logo" />
             </a>
 
             <!--end::Logo-->
@@ -136,22 +141,16 @@
           <!--begin::Content-->
           <div id="Matriz" class="matriz-table"></div>
 
-          <div id="Result"></div>
-
-          <button onclick="IncreaseTableSize()">+</button>
-          <button onclick="DecreaseTableSize()">-</button>
-          <button onclick="SubmitTable()">Enviar</button>
-
-          <style>
-            .matriz-table{
-              margin: 0 auto;
-            }
-
-            .matriz-table td{
-              padding: 0;
-              border: 1px solid black;
-            }
-          </style>
+          <div class="container-control-console">
+            <button type="button" class="btn btn-primary" onclick="IncreaseTableSize()">+</button>
+            <button type="button" class="btn btn-primary" onclick="DecreaseTableSize()">-</button>
+          </div>
+            
+          <div id="Result" class="result-output"></div>
+          
+          <div class="container-output">
+            <button type="button" class="btn btn-success send-button" onclick="SubmitTable()">Enviar</button>
+          </div>
 
           <div
             class="content d-flex flex-column flex-column-fluid"
@@ -198,6 +197,15 @@
       function createTable(){
         var cellCount = 0;
 
+        var title = document.createElement('h2');
+        title.classList.add('title');
+        
+        if (tableType === "C") {
+          title.innerHTML = "Regra de Cramer";
+        }else {
+          title.innerHTML = "Teorema de Laplace";
+        }
+
         var table = document.createElement('table');
         table.classList.add('table');
 
@@ -211,6 +219,7 @@
             var td = document.createElement('td');
             td.classList.add("input");
             var input = document.createElement('input');
+            input.classList.add("form-control");
             input.type = "text";
             input.value = 0;
             
@@ -227,6 +236,7 @@
         table.appendChild(tbody);
         
         var local = document.getElementById('Matriz');
+        local.appendChild(title);
         local.appendChild(table);
       }
 
@@ -368,6 +378,7 @@
     
           td.classList.add("input");
           var input = document.createElement('input');
+          input.classList.add("form-control");
           input.type = "text";
           input.value = Result[j];
           
@@ -395,6 +406,7 @@
         resultOutputContainer.classList.add("result-laplace-container");
 
         var input = document.createElement('input');
+        input.classList.add("form-control");
         input.type = "text";
         input.id = "laplaceResultOutput";
         input.value = Result;

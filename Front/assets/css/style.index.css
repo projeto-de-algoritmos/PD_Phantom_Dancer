@@ -1,0 +1,68 @@
+.brand {
+  margin: 15px auto;
+  background-color: #1e1e2d;
+}
+
+.logo {
+  border-radius: 4px;
+  width: 120px;
+  margin: 0 auto;
+}
+
+.title {
+  margin-bottom: 12px;
+}
+
+.matriz-table {
+  margin: 80px auto 15px auto;
+  overflow: auto;
+}
+
+.matriz-table td {
+  padding: 2px;
+}
+
+.matriz-table input {
+  padding: 2px;
+}
+
+.container-control-console {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 auto;
+  width: 33%;
+}
+
+.container-control-console button {
+  width: 80px;
+  padding: 8;
+  margin-right: 8px;
+  border-radius: 12px;
+}
+
+.result-output {
+  margin: 30px auto 0 auto;
+}
+
+.result-output td {
+  padding: 2px;
+}
+
+.result-output input {
+  padding: 2px;
+}
+
+.container-output {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  margin: 2px auto;
+}
+
+.send-button {
+  margin: 0 auto;
+  width: 240px;
+  padding: 12px;
+  border-radius: 12px;
+}
