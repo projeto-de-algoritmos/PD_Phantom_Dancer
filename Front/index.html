@@ -135,6 +135,9 @@
         <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
           <!--begin::Content-->
           <div id="Matriz" class="matriz-table"></div>
+
+          <div id="Result"></div>
+
           <button onclick="IncreaseTableSize()">+</button>
           <button onclick="DecreaseTableSize()">-</button>
           <button onclick="SubmitTable()">Enviar</button>
@@ -227,8 +230,8 @@
         local.appendChild(table);
       }
 
-      function destroyTable() {
-        var local = document.getElementById('Matriz');
+      function destroyTable(idValue) {
+        var local = document.getElementById(idValue);
 
         while(local.hasChildNodes()){
           local.firstChild.remove();
@@ -238,7 +241,8 @@
       function IncreaseTableSize(){
         if(tableSize < 11){
           tableSize++;
-          destroyTable();
+          destroyTable('Matriz');
+          destroyTable('Result');
           createTable();
         }
         else
@@ -250,7 +254,8 @@
       function DecreaseTableSize(){
         if(tableSize > 2){
           tableSize--;
-          destroyTable();
+          destroyTable('Matriz');
+          destroyTable('Result');
           createTable();
         }
         else
@@ -263,7 +268,8 @@
       {
         event.preventDefault();
         tableType = "L"
-        destroyTable();
+        destroyTable('Matriz');
+        destroyTable('Result');
         createTable();
       }
 
@@ -271,13 +277,16 @@
       {
         event.preventDefault();
         tableType = "C"
-        destroyTable();
+        destroyTable('Matriz');
+        destroyTable('Result');
         createTable();
       }
 
       function SubmitTable()
       {
         event.preventDefault();
+
+        destroyTable('Result');
 
         var cellNumber = Math.pow(tableSize, 2);
         cellNumber = tableType === "C" ? cellNumber + tableSize : cellNumber;
@@ -317,7 +326,7 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                CreateResultCramerTable(json.Response);
+                CreateOutputTableResult(json.Response);
             }
         };
         var data = JSON.stringify({"matriz": matrix});
@@ -331,15 +340,20 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                CreateResultLaplace(json.Response);
+                CreateOutputResult(json.Response);
             }
         };
         var data = JSON.stringify({"matriz": matrix});
         xhr.send(data);
       }
 
-      function CreateResultCramerTable (Result) {
+      function CreateOutputTableResult (Result) {
         var cellCount = 0;
+
+        if(typeof Result === 'string'){
+          CreateOutputResult (Result)
+          return;
+        }
 
         var table = document.createElement('table');
         table.classList.add('table');
@@ -370,11 +384,11 @@
         }
 
         
-        var local = document.getElementById('Matriz');
+        var local = document.getElementById('Result');
         local.appendChild(table);
       }
 
-      function CreateResultLaplace (Result) {
+      function CreateOutputResult (Result) {
         var cellCount = 0;
 
         var resultOutputContainer = document.createElement('div');
@@ -387,7 +401,7 @@
 
         resultOutputContainer.appendChild(input);
         
-        var local = document.getElementById('Matriz');
+        var local = document.getElementById('Result');
         local.appendChild(resultOutputContainer);
       }
 
