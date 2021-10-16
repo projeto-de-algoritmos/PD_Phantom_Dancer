@@ -209,6 +209,7 @@
             td.classList.add("input");
             var input = document.createElement('input');
             input.type = "text";
+            input.value = 0;
             
             input.id = "cell-" + cellCount;
             cellCount++;
@@ -229,7 +230,9 @@
       function destroyTable() {
         var local = document.getElementById('Matriz');
 
-        local.firstChild.remove();
+        while(local.hasChildNodes()){
+          local.firstChild.remove();
+        }
       }
 
       function IncreaseTableSize(){
@@ -298,12 +301,10 @@
             arr = [];
           }
 
-          arr[count] = cellValue
+          arr[count] = cellValue != undefined ? cellValue : 0;
           matrix[j] = arr;
           count++;
         }
-
-
 
         if(tableType === "C") PostCramer(matrix);
         if(tableType === "L") PostLaplace(matrix);
@@ -316,7 +317,7 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                console.log(json.Response);
+                CreateResultCramerTable(json.Response);
             }
         };
         var data = JSON.stringify({"matriz": matrix});
@@ -330,11 +331,64 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var json = JSON.parse(xhr.responseText);
-                console.log(json.Response);
+                CreateResultLaplace(json.Response);
             }
         };
         var data = JSON.stringify({"matriz": matrix});
         xhr.send(data);
+      }
+
+      function CreateResultCramerTable (Result) {
+        var cellCount = 0;
+
+        var table = document.createElement('table');
+        table.classList.add('table');
+
+        var tbody = document.createElement('tbody');
+        tbody.setAttribute("id","tbody");
+
+        for (var j = 0; j < tableSize; j++) {
+          var tr = document.createElement('tr');
+    
+          var td = document.createElement('td');
+    
+          td.classList.add("input");
+          var input = document.createElement('input');
+          input.type = "text";
+          input.value = Result[j];
+          
+          input.id = "cell-" + cellCount;
+          cellCount++;
+
+          td.appendChild(input);
+          
+          tr.appendChild(td);
+
+          tbody.appendChild(tr);
+          
+          table.appendChild(tbody);
+        }
+
+        
+        var local = document.getElementById('Matriz');
+        local.appendChild(table);
+      }
+
+      function CreateResultLaplace (Result) {
+        var cellCount = 0;
+
+        var resultOutputContainer = document.createElement('div');
+        resultOutputContainer.classList.add("result-laplace-container");
+
+        var input = document.createElement('input');
+        input.type = "text";
+        input.id = "laplaceResultOutput";
+        input.value = Result;
+
+        resultOutputContainer.appendChild(input);
+        
+        var local = document.getElementById('Matriz');
+        local.appendChild(resultOutputContainer);
       }
 
       var KTAppSettings = {
