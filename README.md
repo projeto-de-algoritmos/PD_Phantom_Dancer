@@ -48,6 +48,7 @@ cd Front/
 ```
 
 2 - Abra o index.html com seu navegador e pronto.
+
 3 - Utilize a calculadora como é mostrado no vídeo ou utilize a partir do swagger presente no link do Back.
 
 ## Apresentação
